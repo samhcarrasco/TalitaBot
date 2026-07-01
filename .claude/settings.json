@@ -1,0 +1,20 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"\nimport json, sys, subprocess\nd = json.load(sys.stdin)\nf = d.get('tool_input', {}).get('file_path', '')\nif f.endswith('.py'):\n    subprocess.run(['uv', 'run', 'isort', f], check=False)\n    subprocess.run(['uv', 'run', 'black', f], check=False)\n\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
