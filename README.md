@@ -10,9 +10,7 @@ error) that you do not understand, take a photo of the screen and send it to Sam
 
 ---
 
-## Part 1 — First time only (you do this ONE time)
-
-You do Part 1 only one time on this computer. After that, you go straight to Part 3.
+## Part 1 — Set up (you do this ONE time)
 
 ### Step 1 — Open the folder
 1. Open the program **VS Code**.
@@ -20,32 +18,7 @@ You do Part 1 only one time on this computer. After that, you go straight to Par
 3. Find the folder named **talitaBot**. Click it. Then click **Select Folder**.
 4. On the left side, you now see a list of files.
 
-### Step 2 — Open the typing box
-- At the top, click **Terminal**. Then click **New Terminal**.
-- A box opens at the bottom. This is where you type.
-- After you type a line, press the **Enter** key.
-
-### Step 3 — Get the bot ready
-Type the two lines below. Type one line. Press **Enter**. Wait until it is done.
-Then type the next line.
-
-Line 1 (this takes a few minutes):
-```
-uv sync
-```
-
-Line 2:
-```
-uv run playwright install chromium
-```
-
-When both are done and there are no red words, Part 1 is finished for ever.
-
----
-
-## Part 2 — Add your things (you do this ONE time)
-
-### Step 4 — Your LinkedIn login and your key
+### Step 2 — Your LinkedIn login and your key
 1. On the left, click the file named **.env**. It opens.
 2. Every line looks like this: `name="value"`. You only change the words **inside
    the " "**. Do not change anything else.
@@ -67,7 +40,7 @@ When both are done and there are no red words, Part 1 is finished for ever.
 
 Your password and your key stay on your computer. They are never sent anywhere.
 
-### Step 5 — Your resume
+### Step 3 — Your resume
 1. Have your resume ready as a **PDF** file.
 2. On the left, open the **data** folder. Then open the **resumes** folder.
 3. Put your PDF file inside the **resumes** folder. (You can pull it there with the
@@ -79,10 +52,13 @@ Your password and your key stay on your computer. They are never sent anywhere.
 
 ---
 
-## Part 3 — Start it (you do this every day) ▶️
+## Part 2 — Start it (you do this every day) ▶️
 
-Easy way: on the left, find the file **start.cmd**. Click it two times, fast.
+On the left, find the file **start.cmd**. Click it two times, fast.
 A black window opens. The bot starts.
+
+> ⏳ **The very first time**, the black window can take a few minutes before anything
+> happens. This is normal. Just wait.
 
 Then:
 1. A **Chrome** window opens by itself.
