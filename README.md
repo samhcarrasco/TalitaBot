@@ -53,16 +53,32 @@ uv run playwright install chromium
 
 ## Part 2 — Add your info (do this ONCE)
 
-### Step 4 — Your LinkedIn login + the secret key
+### Step 4 — Your LinkedIn login + your API key
 1. In the file list on the left, click the file named **`.env`** to open it.
-2. Fill in these three lines (keep the quotes):
-   - `linkedin_email="your LinkedIn email"`
-   - `linkedin_password="your LinkedIn password"`
-   - `llm_api_key="the key Sam gives you"`
-3. Leave everything else as-is.
-4. Save with **Ctrl + S**.
+2. Inside, each line looks like `name="value"`. You only change the text **between
+   the quotes** — leave the name and the `=` and the quotes alone.
+3. Change **exactly these three lines**. When you open the file they look like this:
 
-> 🔒 This file stays on your computer only — your password is never uploaded anywhere.
+   ```
+   linkedin_email="your_linkedin_email@example.com"
+   linkedin_password="your_linkedin_password"
+   llm_api_key="your_llm_api_key"
+   ```
+
+   Replace the placeholder text so they become **your** details, for example:
+
+   ```
+   linkedin_email="talita@gmail.com"
+   linkedin_password="myLinkedInPassword"
+   llm_api_key="sk-abc123...your real key..."
+   ```
+
+   👉 **Your API key goes on the `llm_api_key` line**, pasted between the quotes.
+4. **Don't touch any other line** — leave everything else exactly as it is.
+5. Save with **Ctrl + S**.
+
+> 🔒 This file stays on your computer only — your password and key are never uploaded
+> anywhere (it's in the "ignore" list, so it never leaves your machine).
 
 ### Step 5 — Your resume
 1. Have your resume ready as a **PDF**.
