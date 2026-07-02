@@ -1,126 +1,122 @@
 # Talita's Job Bot 💼
 
-This little program logs into **your** LinkedIn, finds marketing jobs for you, and
-fills out the "Easy Apply" forms automatically. This page tells you exactly how to
-start it. No tech knowledge needed — just follow the steps in order.
+This program uses your LinkedIn. It looks for marketing jobs. It fills the
+"Easy Apply" forms for you. It sends them for you.
 
-> 💡 **Don't panic at the word "terminal."** It's just a little box where you type a
-> line and press Enter. You'll only touch it a few times. If any step gives a red
-> error you don't understand, take a screenshot and send it to Sam.
+This page shows you how to start it. Follow the steps in order, from top to bottom.
+
+Do not worry. You do not need to know about computers. If you see red words (an
+error) that you do not understand, take a photo of the screen and send it to Sam.
 
 ---
 
-## Part 1 — First-time setup (do this ONCE, ~20 minutes)
+## Part 1 — First time only (you do this ONE time)
 
-You only ever do Part 1 one time on this computer. After that you skip straight to Part 3.
+You do Part 1 only one time on this computer. After that, you go straight to Part 3.
 
-### Step 1 — Open the project in VS Code
-1. Open **VS Code**.
-2. Top menu: **File → Open Folder…**
-3. Choose the **`talitaBot`** folder and click **Select Folder**.
-4. On the left you should now see a list of files (README.md, config, data, etc.).
+### Step 1 — Open the folder
+1. Open the program **VS Code**.
+2. At the top, click **File**. Then click **Open Folder**.
+3. Find the folder named **talitaBot**. Click it. Then click **Select Folder**.
+4. On the left side, you now see a list of files.
 
-### Step 2 — Open the terminal
-- Top menu: **Terminal → New Terminal**.
-- A panel opens at the **bottom** of VS Code. That's the terminal. You'll type lines
-  here and press **Enter** after each one.
+### Step 2 — Open the typing box
+- At the top, click **Terminal**. Then click **New Terminal**.
+- A box opens at the bottom. This is where you type.
+- After you type a line, press the **Enter** key.
 
-### Step 3 — Set up the bot
-Type these two lines into the terminal **one at a time**. After each one press
-**Enter** and **wait** until it finishes and you get a fresh line before the next.
+### Step 3 — Get the bot ready
+Type the two lines below. Type one line. Press **Enter**. Wait until it is done.
+Then type the next line.
 
-**Line 1 — download everything the bot needs (takes a few minutes):**
+Line 1 (this takes a few minutes):
 ```
 uv sync
 ```
 
-**Line 2 — install the browser the bot drives:**
+Line 2:
 ```
 uv run playwright install chromium
 ```
 
-✅ When both finish without a red error, Part 1 is done forever.
+When both are done and there are no red words, Part 1 is finished for ever.
 
 ---
 
-## Part 2 — Add your info (do this ONCE)
+## Part 2 — Add your things (you do this ONE time)
 
-### Step 4 — Your LinkedIn login + your API key
-1. In the file list on the left, click the file named **`.env`** to open it.
-2. Inside, each line looks like `name="value"`. You only change the text **between
-   the quotes** — leave the name and the `=` and the quotes alone.
-3. Change **exactly these three lines**. When you open the file they look like this:
-
+### Step 4 — Your LinkedIn login and your key
+1. On the left, click the file named **.env**. It opens.
+2. Every line looks like this: `name="value"`. You only change the words **inside
+   the " "**. Do not change anything else.
+3. Change these three lines. Now they look like this:
    ```
    linkedin_email="your_linkedin_email@example.com"
    linkedin_password="your_linkedin_password"
    llm_api_key="your_llm_api_key"
    ```
-
-   Replace the placeholder text so they become **your** details, for example:
-
+   Put your own words inside the " ". Like this:
    ```
    linkedin_email="talita@gmail.com"
    linkedin_password="myLinkedInPassword"
-   llm_api_key="sk-abc123...your real key..."
+   llm_api_key="sk-abc123...your key..."
    ```
+   👉 Put your key on the **llm_api_key** line, inside the " ".
+4. Do not change any other line.
+5. Save the file. Hold the **Ctrl** key and press **S**.
 
-   👉 **Your API key goes on the `llm_api_key` line**, pasted between the quotes.
-4. **Don't touch any other line** — leave everything else exactly as it is.
-5. Save with **Ctrl + S**.
-
-> 🔒 This file stays on your computer only — your password and key are never uploaded
-> anywhere (it's in the "ignore" list, so it never leaves your machine).
+Your password and your key stay on your computer. They are never sent anywhere.
 
 ### Step 5 — Your resume
-1. Have your resume ready as a **PDF**.
-2. In the file list, open the **`data`** folder, then the **`resumes`** folder.
-3. **Drag your PDF** into that `resumes` folder.
-4. **Rename it exactly** to: `Resume_Talita.pdf`
-   (right-click the file → Rename). The name must match exactly, capital R.
+1. Have your resume ready as a **PDF** file.
+2. On the left, open the **data** folder. Then open the **resumes** folder.
+3. Put your PDF file inside the **resumes** folder. (You can pull it there with the
+   mouse.)
+4. Give the file this exact name: `Resume_Talita.pdf`
+   - To change the name: click the file with the **right** mouse button, then click
+     **Rename**, then type the name.
+   - The name must be the same. Big **R** at the start.
 
 ---
 
-## Part 3 — Run it (this is your everyday step) ▶️
+## Part 3 — Start it (you do this every day) ▶️
 
-**The easy way:** in the file list, find **`start.cmd`** and **double-click** it.
-A black window opens and the bot starts.
-
-*(Or, if you prefer the terminal: type `uv run python main.py` and press Enter.)*
+Easy way: on the left, find the file **start.cmd**. Click it two times, fast.
+A black window opens. The bot starts.
 
 Then:
-1. A **Chrome window opens by itself.**
-2. **The very first time only:** log into LinkedIn yourself in that window (type your
-   code / do the phone verification if it asks). After this first login it stays logged
-   in and won't ask again.
-3. Sit back — it starts finding marketing jobs and applying. It **stops automatically
-   after 30 applications**.
+1. A **Chrome** window opens by itself.
+2. **The first time only:** log in to your LinkedIn in that window. If it asks for a
+   code from your phone, type it. After this first time, it stays logged in. It will
+   not ask again.
+3. Now wait. The bot looks for jobs and sends them for you. It **stops by itself
+   after 30 jobs**.
 
-### To stop it early
-- Just **close the Chrome window**, or click the black window and press **Ctrl + C**.
-- To **pause and resume**: press **Ctrl + X** (give it a couple seconds to react).
-
----
-
-## What to expect (so nothing surprises you)
-
-- ✅ It applies only to **entry / associate-level marketing & communications** jobs.
-- ⏭️ It **skips** jobs that make you write an essay ("Why do you want to work here?",
-  cover letters, "Tell us about yourself"). That's on purpose — the bot won't fake those
-  in your voice. So it will pass on some jobs, and that's normal.
-- 💰 On salary questions it answers around **$65,000–$75,000** (or matches the job's own
-  listed range). There's no minimum, so it won't skip low-paying jobs.
-- 🔁 Run it again the next day for a fresh batch (LinkedIn resets the daily limit).
+### To stop it
+- Close the Chrome window. Or click the black window and hold **Ctrl** and press **C**.
+- To pause: hold **Ctrl** and press **X**. Wait a few seconds.
 
 ---
 
-## If something goes wrong
+## What the bot does (so you are not surprised)
 
-1. Take a screenshot of the black window / terminal (especially the last few red lines).
+- ✅ It applies only to **junior marketing** jobs (entry and associate level).
+- ⏭️ It **skips** jobs that ask you to write a long text (for example: "Why do you
+  want this job?" or a cover letter). This is normal. The bot will not write these
+  for you. So it passes some jobs. That is okay.
+- 💰 For salary questions, it answers about **$65,000 to $75,000**. Or it uses the
+  salary the job shows. There is no minimum.
+- 🔁 You can start it again the next day to find new jobs.
+
+---
+
+## If there is a problem
+
+1. Take a photo of the black window (show the last red words).
 2. Send it to **Sam**.
 
-That's it — you don't need to fix anything technical yourself. 🙂
+You do not need to fix anything yourself. 🙂
 
 ---
 
-<sub>Technical setup details for engineers live in [SETUP.md](SETUP.md).</sub>
+<sub>Technical setup for engineers is in SETUP.md.</sub>
