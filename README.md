@@ -16,10 +16,11 @@ error) that you do not understand, take a photo of the screen and send it to Sam
 
 ### Step 1 — Copy the bot to your computer
 1. Open the program **VS Code**.
-2. Hold **Ctrl** and press the **`** key. (That key is at the top-left of the
-   keyboard, under **Esc**. It has the marks **`** and **~** on it.) A box opens at
-   the bottom. This box is where you type. It is called the *terminal*.
-   - (If the box does not open: at the top, click **Terminal**, then **New Terminal**.)
+2. Hold **Ctrl** and press the **~** key (the tilde key). It is at the very top-left
+   of the keyboard, just under the **Esc** key. A box opens at the bottom of the
+   screen. This box is where you type — it is called the *terminal*.
+   - (If nothing opens, do this instead: at the top, click **Terminal**, then
+     **New Terminal**.)
 3. Copy the line below. Click inside the box, paste it, and press **Enter**:
    ```
    git clone https://github.com/samhcarrasco/TalitaBot.git
@@ -133,10 +134,11 @@ vermelho (um erro) que você não entende, tire uma foto da tela e mande para o 
 
 ### Passo 1 — Copiar o robô para o seu computador
 1. Abra o programa **VS Code**.
-2. Segure **Ctrl** e aperte a tecla **`**. (Essa tecla fica no canto superior esquerdo
-   do teclado, embaixo do **Esc**. Ela tem os sinais **`** e **~**.) Uma caixa abre
-   embaixo. É nela que você digita. Chama-se *terminal*.
-   - (Se a caixa não abrir: lá em cima, clique em **Terminal**, depois **New Terminal**.)
+2. Segure **Ctrl** e aperte a tecla **~** (a tecla til). Ela fica bem no canto superior
+   esquerdo do teclado, logo abaixo da tecla **Esc**. Uma caixa abre embaixo da tela.
+   É nela que você digita — chama-se *terminal*.
+   - (Se não abrir nada, faça assim: lá em cima, clique em **Terminal**, depois
+     **New Terminal**.)
 3. Copie a linha abaixo. Clique dentro da caixa, cole e aperte **Enter**:
    ```
    git clone https://github.com/samhcarrasco/TalitaBot.git
