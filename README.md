@@ -12,11 +12,24 @@ error) that you do not understand, take a photo of the screen and send it to Sam
 
 ## Part 1 — Set up (you do this ONE time)
 
-### Step 1 — Open the folder
+### Step 1 — Copy the bot to your computer
 1. Open the program **VS Code**.
-2. At the top, click **File**. Then click **Open Folder**.
-3. Find the folder named **talitaBot**. Click it. Then click **Select Folder**.
-4. On the left side, you now see a list of files.
+2. Hold **Ctrl** and **Shift**, then press **P**. A search box opens at the top.
+3. Type these words: `Git: Clone`
+4. Click **Git: Clone** in the list.
+5. Copy the link below and paste it in the box, then press **Enter**:
+   ```
+   https://github.com/samhcarrasco/TalitaBot.git
+   ```
+6. It asks where to save it. Choose a place (for example, your **Documents** folder).
+   Click **Select**.
+7. If a window asks you to **sign in to GitHub**, sign in with the account Sam gave you.
+8. Wait a little. When it asks "Would you like to open the cloned repository?",
+   click **Open**.
+9. On the left side, you now see a list of files. The folder is named **TalitaBot**.
+
+> 💻 If you like typing instead, you can do the same thing in the terminal with:
+> `git clone https://github.com/samhcarrasco/TalitaBot.git`
 
 ### Step 2 — Your LinkedIn login and your key
 1. On the left, click the file named **.env**. It opens.
@@ -71,6 +84,10 @@ Then:
 ### To stop it
 - Close the Chrome window. Or click the black window and hold **Ctrl** and press **C**.
 - To pause: hold **Ctrl** and press **X**. Wait a few seconds.
+
+### To open the bot again another day
+- Open **VS Code**. Click **File**, then **Open Folder**, then choose **TalitaBot**.
+- (You do Step 1 only one time. You do not clone it again.)
 
 ---
 
