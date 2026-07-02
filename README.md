@@ -25,29 +25,21 @@ You only ever do Part 1 one time on this computer. After that you skip straight 
 - A panel opens at the **bottom** of VS Code. That's the terminal. You'll type lines
   here and press **Enter** after each one.
 
-### Step 3 — Install the tools
-Type these lines into the terminal **one at a time**. After each line press **Enter**
-and **wait** until it finishes and you get a fresh line before doing the next one.
+### Step 3 — Set up the bot
+Type these two lines into the terminal **one at a time**. After each one press
+**Enter** and **wait** until it finishes and you get a fresh line before the next.
 
-**Line 1 — install the helper called "uv":**
-```
-irm https://astral.sh/uv/install.ps1 | iex
-```
-➡️ When it finishes, **close the terminal** (click the 🗑️ trash-can icon on the terminal
-panel) and open a fresh one again with **Terminal → New Terminal**. (This lets the
-computer notice the tool you just installed.)
-
-**Line 2 — download everything the bot needs (takes a few minutes):**
+**Line 1 — download everything the bot needs (takes a few minutes):**
 ```
 uv sync
 ```
 
-**Line 3 — install the browser the bot drives:**
+**Line 2 — install the browser the bot drives:**
 ```
 uv run playwright install chromium
 ```
 
-✅ When all three finish without a red error, Part 1 is done forever.
+✅ When both finish without a red error, Part 1 is done forever.
 
 ---
 
