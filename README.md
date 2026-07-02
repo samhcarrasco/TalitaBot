@@ -1,5 +1,7 @@
 # Talita's Job Bot 💼
 
+> 🇧🇷 **Versão em português (Brasil): [role para baixo](#-guia-em-português-brasil-).**
+
 This program uses your LinkedIn. It looks for marketing jobs. It fills the
 "Easy Apply" forms for you. It sends them for you.
 
@@ -14,22 +16,23 @@ error) that you do not understand, take a photo of the screen and send it to Sam
 
 ### Step 1 — Copy the bot to your computer
 1. Open the program **VS Code**.
-2. Hold **Ctrl** and **Shift**, then press **P**. A search box opens at the top.
-3. Type these words: `Git: Clone`
-4. Click **Git: Clone** in the list.
-5. Copy the link below and paste it in the box, then press **Enter**:
+2. Hold **Ctrl** and press the **`** key. (That key is at the top-left of the
+   keyboard, under **Esc**. It has the marks **`** and **~** on it.) A box opens at
+   the bottom. This box is where you type. It is called the *terminal*.
+   - (If the box does not open: at the top, click **Terminal**, then **New Terminal**.)
+3. Copy the line below. Click inside the box, paste it, and press **Enter**:
    ```
-   https://github.com/samhcarrasco/TalitaBot.git
+   git clone https://github.com/samhcarrasco/TalitaBot.git
    ```
-6. It asks where to save it. Choose a place (for example, your **Documents** folder).
-   Click **Select**.
-7. If a window asks you to **sign in to GitHub**, sign in with the account Sam gave you.
-8. Wait a little. When it asks "Would you like to open the cloned repository?",
-   click **Open**.
-9. On the left side, you now see a list of files. The folder is named **TalitaBot**.
-
-> 💻 If you like typing instead, you can do the same thing in the terminal with:
-> `git clone https://github.com/samhcarrasco/TalitaBot.git`
+4. Wait until it stops and you get a new empty line. The bot is now on your computer,
+   in a folder named **TalitaBot**.
+5. Now open that folder. Copy the line below, paste it in the same box, press **Enter**:
+   ```
+   code -r TalitaBot
+   ```
+   VS Code opens the bot. On the left side, you now see a list of files.
+   - (If that did not work: click **File**, then **Open Folder**, find **TalitaBot**,
+     and click **Select Folder**.)
 
 ### Step 2 — Your LinkedIn login and your key
 1. On the left, click the file named **.env**. It opens.
@@ -109,6 +112,124 @@ Then:
 2. Send it to **Sam**.
 
 You do not need to fix anything yourself. 🙂
+
+---
+---
+
+# 🇧🇷 Guia em Português (Brasil)
+
+Este programa usa o seu LinkedIn. Ele procura vagas de marketing. Ele preenche os
+formulários de "Easy Apply" (Candidatura Simplificada) para você. E envia as
+candidaturas para você.
+
+Esta página mostra como começar. Siga os passos na ordem, de cima para baixo.
+
+Não se preocupe. Você não precisa entender de computador. Se aparecerem palavras em
+vermelho (um erro) que você não entende, tire uma foto da tela e mande para o Sam.
+
+---
+
+## Parte 1 — Preparar (você faz isso UMA vez)
+
+### Passo 1 — Copiar o robô para o seu computador
+1. Abra o programa **VS Code**.
+2. Segure **Ctrl** e aperte a tecla **`**. (Essa tecla fica no canto superior esquerdo
+   do teclado, embaixo do **Esc**. Ela tem os sinais **`** e **~**.) Uma caixa abre
+   embaixo. É nela que você digita. Chama-se *terminal*.
+   - (Se a caixa não abrir: lá em cima, clique em **Terminal**, depois **New Terminal**.)
+3. Copie a linha abaixo. Clique dentro da caixa, cole e aperte **Enter**:
+   ```
+   git clone https://github.com/samhcarrasco/TalitaBot.git
+   ```
+4. Espere até parar e aparecer uma linha nova vazia. O robô já está no seu computador,
+   numa pasta chamada **TalitaBot**.
+5. Agora abra essa pasta. Copie a linha abaixo, cole na mesma caixa e aperte **Enter**:
+   ```
+   code -r TalitaBot
+   ```
+   O VS Code abre o robô. Do lado esquerdo, aparece a lista de arquivos.
+   - (Se não funcionar: clique em **File**, depois **Open Folder**, ache **TalitaBot**
+     e clique em **Select Folder**.)
+
+### Passo 2 — Seu login do LinkedIn e sua chave
+1. Do lado esquerdo, clique no arquivo chamado **.env**. Ele abre.
+2. Cada linha tem este formato: `nome="valor"`. Você só muda as palavras **dentro das
+   " "**. Não mude mais nada.
+3. Mude estas três linhas. Quando você abre, elas estão assim:
+   ```
+   linkedin_email="your_linkedin_email@example.com"
+   linkedin_password="your_linkedin_password"
+   llm_api_key="your_llm_api_key"
+   ```
+   Coloque as suas informações dentro das " ". Assim:
+   ```
+   linkedin_email="talita@gmail.com"
+   linkedin_password="minhaSenhaDoLinkedin"
+   llm_api_key="sk-abc123...sua chave..."
+   ```
+   👉 Coloque a sua chave na linha **llm_api_key**, dentro das " ".
+4. Não mude nenhuma outra linha.
+5. Salve o arquivo. Segure **Ctrl** e aperte **S**.
+
+Sua senha e sua chave ficam só no seu computador. Elas nunca são enviadas para lugar
+nenhum.
+
+### Passo 3 — Seu currículo
+1. Tenha o seu currículo pronto em **PDF**.
+2. Do lado esquerdo, abra a pasta **data**. Depois abra a pasta **resumes**.
+3. Coloque o seu arquivo PDF dentro da pasta **resumes**. (Você pode arrastar com o
+   mouse.)
+4. Dê ao arquivo exatamente este nome: `Resume_Talita.pdf`
+   - Para mudar o nome: clique no arquivo com o botão **direito** do mouse, clique em
+     **Rename** (Renomear) e digite o nome.
+   - O nome tem que ser igualzinho. **R** maiúsculo no começo.
+
+---
+
+## Parte 2 — Ligar o robô (você faz isso todo dia) ▶️
+
+Do lado esquerdo, procure o arquivo **start.cmd**. Clique nele duas vezes, rápido.
+Uma janela preta abre. O robô começa.
+
+> ⏳ **Na primeira vez**, a janela preta pode demorar alguns minutos antes de acontecer
+> algo. Isso é normal. É só esperar.
+
+Depois:
+1. Uma janela do **Chrome** abre sozinha.
+2. **Só na primeira vez:** faça login no seu LinkedIn nessa janela. Se pedir um código
+   do seu celular, digite. Depois dessa primeira vez, ele continua logado. Não vai
+   pedir de novo.
+3. Agora espere. O robô procura vagas e envia para você. Ele **para sozinho depois de
+   30 vagas**.
+
+### Para parar
+- Feche a janela do Chrome. Ou clique na janela preta e segure **Ctrl** e aperte **C**.
+- Para pausar: segure **Ctrl** e aperte **X**. Espere alguns segundos.
+
+### Para abrir o robô outro dia
+- Abra o **VS Code**. Clique em **File**, depois **Open Folder**, e escolha **TalitaBot**.
+- (Você faz o Passo 1 só uma vez. Não precisa clonar de novo.)
+
+---
+
+## O que o robô faz (para você não se assustar)
+
+- ✅ Ele se candidata só a vagas de **marketing júnior** (nível entry e associate).
+- ⏭️ Ele **pula** vagas que pedem para escrever um texto longo (por exemplo: "Por que
+  você quer esta vaga?" ou uma carta de apresentação). Isso é normal. O robô não
+  escreve esses textos por você. Então ele deixa passar algumas vagas. Tudo bem.
+- 💰 Nas perguntas de salário, ele responde em torno de **US$ 65.000 a US$ 75.000**. Ou
+  usa o salário que a vaga mostra. Não tem valor mínimo.
+- 🔁 Você pode ligar de novo no dia seguinte para achar vagas novas.
+
+---
+
+## Se der algum problema
+
+1. Tire uma foto da janela preta (mostrando as últimas palavras em vermelho).
+2. Mande para o **Sam**.
+
+Você não precisa consertar nada sozinha. 🙂
 
 ---
 
