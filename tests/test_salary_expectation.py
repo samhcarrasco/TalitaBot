@@ -60,6 +60,47 @@ def test_hourly_ignores_annual_listing():
     assert _answer("$90,000 - $130,000", is_numeric=True, is_hourly=True) == "30"
 
 
+def _location(question: str) -> str:
+    fake_self = SimpleNamespace(
+        LOCATION_CITY=BaseEasyApplier.LOCATION_CITY,
+        LOCATION_STATE=BaseEasyApplier.LOCATION_STATE,
+        LOCATION_COUNTRY=BaseEasyApplier.LOCATION_COUNTRY,
+        LOCATION_FULL=BaseEasyApplier.LOCATION_FULL,
+    )
+    return BaseEasyApplier._location_answer(fake_self, question)
+
+
+@pytest.mark.parametrize(
+    "question,expected",
+    [
+        ("What is your current location?", "Fanwood, New Jersey"),
+        ("City", "Fanwood"),
+        ("In which city are you located?", "Fanwood"),
+        ("State", "New Jersey"),
+        ("State / Province", "New Jersey"),
+        ("Country of residence", "United States"),
+        ("Where are you based?", "Fanwood, New Jersey"),
+    ],
+)
+def test_location_answer(question, expected):
+    assert BaseEasyApplier._looks_like_location_question(question)
+    assert _location(question) == expected
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "Are you comfortable with this job's location?",
+        "Are you willing to relocate?",
+        "Please state your full name",
+        "Are you authorized to work in the US?",
+        "What are your salary expectations?",
+    ],
+)
+def test_non_location_questions_not_matched(question):
+    assert not BaseEasyApplier._looks_like_location_question(question)
+
+
 def test_listing_range_uses_high_end():
     assert _answer("$90,000 - $130,000", is_numeric=True) == "130000"
 

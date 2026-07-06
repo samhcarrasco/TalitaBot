@@ -1386,6 +1386,7 @@ class LinkedInEasyApplier(BaseEasyApplier):
             is_salary_expectation = (
                 is_numeric and self._looks_like_salary_expectation_question(question_text)
             )
+            is_location = self._looks_like_location_question(question_text)
 
             # Check if it's a cover letter field (case-insensitive)
             is_cover_letter = self._looks_like_cover_letter(question_text)
@@ -1414,7 +1415,7 @@ class LinkedInEasyApplier(BaseEasyApplier):
             logger.info(f"question: {question_text}")
             # Look for existing answer if it's not a cover letter field
             existing_answer = None
-            if not is_cover_letter and not is_salary_expectation:
+            if not is_cover_letter and not is_salary_expectation and not is_location:
                 cached_question = self._find_cached_question(question_text, question_type)
                 if cached_question:
                     existing_answer = cached_question.answer.strip()
@@ -1436,6 +1437,9 @@ class LinkedInEasyApplier(BaseEasyApplier):
                     question_text,
                     answer,
                 )
+            elif is_location:
+                answer = self._location_answer(question_text)
+                logger.info("Using location for '%s': %s", question_text, answer)
             else:
                 if is_numeric:
                     logger.info(f"Answering numeric question: {question_text}")

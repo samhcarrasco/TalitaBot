@@ -39,6 +39,11 @@ class BaseEasyApplier(ABC):
     HOURLY_SINGLE = 30
     HOURLY_RANGE_LOW = 28
     HOURLY_RANGE_HIGH = 35
+    # Location answers (deterministic — bypass the LLM for geography fields).
+    LOCATION_CITY = "Fanwood"
+    LOCATION_STATE = "New Jersey"
+    LOCATION_COUNTRY = "United States"
+    LOCATION_FULL = "Fanwood, New Jersey"
     # Kept as a last-resort constant for any path that has no job context.
     DEFAULT_SALARY_EXPECTATION = str(DEFAULT_SINGLE_SALARY)
     SALARY_EXPECTATION_KEYWORDS = (
@@ -57,6 +62,32 @@ class BaseEasyApplier(ABC):
         "wage",
     )
     HOURLY_KEYWORDS = ("hourly", "per hour", "an hour", "wage")
+    LOCATION_KEYWORDS = (
+        "location",
+        "city",
+        "town",
+        "province",
+        "country",
+        "where are you",
+        "where do you live",
+        "where are you located",
+        "where are you based",
+        "current location",
+    )
+    # If any of these appear, the question is about a preference/eligibility, not a
+    # geography value to fill in (e.g. "comfortable with this location", "willing to
+    # relocate", "authorized to work"), so it must NOT get a deterministic location.
+    LOCATION_EXCLUDE = (
+        "comfortable",
+        "willing",
+        "relocat",
+        "commut",
+        "prefer",
+        "authoriz",
+        "eligib",
+        "sponsor",
+        "visa",
+    )
 
     def __init__(self) -> None:
         super().__init__()
@@ -110,6 +141,37 @@ class BaseEasyApplier(ABC):
             re.search(r"\b" + re.escape(keyword) + r"\b", normalized)
             for keyword in cls.HOURLY_KEYWORDS
         )
+
+    @classmethod
+    def _looks_like_location_question(cls, text: str) -> bool:
+        """True for a geography field to fill (city / state / country / where based).
+
+        Excludes preference/eligibility questions ("comfortable with this location",
+        "willing to relocate", "authorized to work") and the verb form ("state your
+        name") so they are not answered with a location value.
+        """
+        normalized = sanitize_text(text or "")
+        if any(bad in normalized for bad in cls.LOCATION_EXCLUDE):
+            return False
+        if any(
+            re.search(r"\b" + re.escape(keyword) + r"\b", normalized)
+            for keyword in cls.LOCATION_KEYWORDS
+        ):
+            return True
+        # A short standalone "state" / "state province" label (not "state your ...").
+        words = normalized.split()
+        return bool(words) and words[0] == "state" and len(words) <= 2
+
+    def _location_answer(self, question_text: str) -> str:
+        """Deterministic geography answer built from the LOCATION_* constants."""
+        q = sanitize_text(question_text or "")
+        if re.search(r"\b(?:city|town)\b", q):
+            return self.LOCATION_CITY
+        if re.search(r"\b(?:state|province)\b", q):
+            return self.LOCATION_STATE
+        if re.search(r"\bcountry\b", q):
+            return self.LOCATION_COUNTRY
+        return self.LOCATION_FULL
 
     # Two money amounts joined by a dash/"to", each optionally $-prefixed, comma-
     # grouped, and/or "k"-suffixed: e.g. "$90,000-$130,000", "90k to 130k".

@@ -685,9 +685,10 @@ class IndeedEasyApplier(BaseEasyApplier):
             is_salary_expectation = (
                 is_numeric and self._looks_like_salary_expectation_question(question_text)
             )
+            is_location = self._looks_like_location_question(question_text)
             cached = (
                 None
-                if is_salary_expectation
+                if is_salary_expectation or is_location
                 else self._find_cached_question(question_text, question_type)
             )
             existing_answer = cached.answer if cached else None
@@ -703,6 +704,9 @@ class IndeedEasyApplier(BaseEasyApplier):
                 self._save_questions(
                     Question(question_type="numeric", question=question_text, answer=answer)
                 )
+            elif is_location:
+                answer = self._location_answer(question_text)
+                logger.info("Using location for '%s': %s", question_text, answer)
             elif existing_answer:
                 answer = existing_answer
                 logger.debug(f"Using cached answer for '{question_text}': '{answer}'")
