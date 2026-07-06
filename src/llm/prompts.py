@@ -101,8 +101,11 @@ Output Score: 0 (REJECT) if ANY of the following is true:
    content, brand, communications, or general digital/marketing work. Reject roles
    centered on sales or account management (e.g. Account Executive, Account Manager,
    Sales, Business Development), on paid-media buying / ad operations (e.g. Media
-   Buyer, Media Planner, Paid Media, PPC / paid-search specialist), or on an
-   unrelated field. Do NOT reject a role that is primarily about social media,
+   Buyer, Media Planner, Paid Media, PPC / paid-search specialist), on financial or
+   insurance sales (e.g. Financial Advisor, Financial Representative, insurance agent
+   — these are often dressed up with "build your brand / use social media" language
+   but are still off-domain), or on any other unrelated field. Do NOT reject a role
+   that is primarily about social media,
    community, content, brand, communications, or digital marketing just because it
    also mentions some paid-media or sales-adjacent duties.
 

@@ -68,5 +68,14 @@ title_blacklist:
   - Media Buyer
   - Media Planner
   - Paid Search
+  # Financial / insurance sales roles (e.g. Northwestern Mutual "Financial
+  # Representative") that LinkedIn injects into unrelated / marketing searches.
+  - Financial Representative
+  - Financial Advisor
+  - Financial Professional
+  - Financial Consultant
+  - Financial Services
+  - Wealth Management
+  - Insurance Agent
 
 location_blacklist: []
