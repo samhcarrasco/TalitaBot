@@ -183,7 +183,7 @@ class WorkPreferences(BaseModel):
     remote_work: Optional[str | bool] = Field(
         default="No info", description="Remote work preference"
     )
-    in_person_work: Optional[str] = Field(
+    in_person_work: Optional[str | bool] = Field(
         default="No info", description="In-person work preference"
     )
     open_to_relocation: Optional[str | bool] = Field(
