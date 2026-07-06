@@ -1,8 +1,7 @@
-# The bot joins every entry into ONE LinkedIn keyword search (commas, not OR).
-# So we use a single boolean OR query to cover all of Talita's role clusters in
-# that one search. LinkedIn's keyword box supports OR / quotes / parentheses.
+# The bot joins every entry into ONE LinkedIn keyword search. Talita searches a
+# single plain keyword (no quotes): social media.
 positions:
-  - '"digital marketing" OR "marketing coordinator" OR "social media" OR "community manager" OR "content marketing"'
+  - social media
 
 remote: true
 hybrid: true
