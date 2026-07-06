@@ -75,7 +75,7 @@ job_is_interesting = """
 You are a job-application filter. Do NOT judge how well the candidate fits the
 role, the seniority match, years of experience, skills overlap, or any
 poster-added "requirements". The candidate wants to apply to essentially every
-role. Your ONLY job is to reject two specific kinds of role.
+role. Your ONLY job is to reject three specific kinds of role.
 ##Job Description
 ```
 {job_description}
@@ -97,6 +97,12 @@ Output Score: 0 (REJECT) if EITHER of the following is true:
 2. STAFF-LEVEL-OR-ABOVE: the role's level is Staff, Senior Staff, Principal,
    Senior Principal, Distinguished, Fellow, Architect-track senior, or higher.
    Do NOT reject Entry, Associate, Mid, or Senior (non-Staff) roles.
+3. ADOBE-PREMIERE-PRIMARY: Adobe Premiere Pro is a PRIMARY / required qualification
+   of the role — e.g. a video-editor position centered on Premiere, or the
+   description lists Premiere as a must-have or as a core responsibility. Do NOT
+   reject roles that merely mention Premiere as a minor, preferred, "nice-to-have",
+   or one-of-many tool, where video editing is only a small part of a broader
+   social media / marketing role.
 
 Otherwise, output Score: 100 (APPLY). When unsure, default to Score: 100.
 Do not deduct points for anything else — missing skills, experience gaps,
