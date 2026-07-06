@@ -58,5 +58,15 @@ title_blacklist:
   - Data Scientist
   - Data Analyst
   - UX Researcher
+  # Off-target roles that surface only because the job description mentions
+  # "social media" (sales / account / paid-media / ad-buying tracks).
+  - Account Executive
+  - Account Manager
+  - Sales
+  - Business Development
+  - Paid Media
+  - Media Buyer
+  - Media Planner
+  - Paid Search
 
 location_blacklist: []

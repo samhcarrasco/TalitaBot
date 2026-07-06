@@ -75,7 +75,7 @@ job_is_interesting = """
 You are a job-application filter. Do NOT judge how well the candidate fits the
 role, the seniority match, years of experience, skills overlap, or any
 poster-added "requirements". The candidate wants to apply to essentially every
-role. Your ONLY job is to reject two specific kinds of role.
+role. Your ONLY job is to reject three specific kinds of role.
 ##Job Description
 ```
 {job_description}
@@ -89,7 +89,7 @@ role. Your ONLY job is to reject two specific kinds of role.
 {search_parameters}
 ```
 ##Decision Rules (apply ONLY these — ignore everything else)
-Output Score: 0 (REJECT) if EITHER of the following is true:
+Output Score: 0 (REJECT) if ANY of the following is true:
 1. FRONT-END-ONLY: the role is primarily or exclusively front-end / UI focused —
    e.g. a dedicated Front-End / Frontend / UI / Web Designer position whose core
    responsibility is building user interfaces with little or no backend scope.
@@ -97,8 +97,17 @@ Output Score: 0 (REJECT) if EITHER of the following is true:
 2. STAFF-LEVEL-OR-ABOVE: the role's level is Staff, Senior Staff, Principal,
    Senior Principal, Distinguished, Fellow, Architect-track senior, or higher.
    Do NOT reject Entry, Associate, Mid, or Senior (non-Staff) roles.
+3. OFF-DOMAIN: the role's core focus is NOT social media, community management,
+   content, brand, communications, or general digital/marketing work. Reject roles
+   centered on sales or account management (e.g. Account Executive, Account Manager,
+   Sales, Business Development), on paid-media buying / ad operations (e.g. Media
+   Buyer, Media Planner, Paid Media, PPC / paid-search specialist), or on an
+   unrelated field. Do NOT reject a role that is primarily about social media,
+   community, content, brand, communications, or digital marketing just because it
+   also mentions some paid-media or sales-adjacent duties.
 
-Otherwise, output Score: 100 (APPLY). When unsure, default to Score: 100.
+Otherwise, output Score: 100 (APPLY). When unsure whether a marketing role is
+on-domain, default to Score: 100.
 Do not deduct points for anything else — missing skills, experience gaps,
 unmatched requirements, or search-parameter mismatches must NOT lower the score.
 
