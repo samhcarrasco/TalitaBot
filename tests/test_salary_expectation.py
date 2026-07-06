@@ -54,15 +54,15 @@ def test_low_range_not_floored():
 
 
 def test_no_range_single_value_field():
-    assert _answer("No salary listed", is_numeric=True) == "70000"
+    assert _answer("No salary listed", is_numeric=True) == "65000"
 
 
 def test_no_range_range_field():
-    assert _answer("No salary listed", is_numeric=False) == "65,000 - 75,000"
+    assert _answer("No salary listed", is_numeric=False) == "60,000 - 70,000"
 
 
 def test_hourly_range_falls_back_to_single():
-    assert _answer("$45 - $60 per hour", is_numeric=True) == "70000"
+    assert _answer("$45 - $60 per hour", is_numeric=True) == "65000"
 
 
 def test_missing_job_context_falls_back():
@@ -74,4 +74,4 @@ def test_missing_job_context_falls_back():
         DEFAULT_RANGE_HIGH=BaseEasyApplier.DEFAULT_RANGE_HIGH,
         _parse_salary_high_end=BaseEasyApplier._parse_salary_high_end,
     )
-    assert BaseEasyApplier._salary_expectation_answer(fake_self, True) == "70000"
+    assert BaseEasyApplier._salary_expectation_answer(fake_self, True) == "65000"

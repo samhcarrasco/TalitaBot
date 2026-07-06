@@ -30,11 +30,11 @@ class BaseEasyApplier(ABC):
     # Salary policy (Talita): no hard floor (she applies regardless of pay). If the
     # listing advertises a range, ask for its high end; otherwise ask her ideal
     # single number, or her ideal range when the field accepts a range rather than
-    # a single value. Ideal band is 65-75k.
+    # a single value. Ideal band is 60-70k.
     SALARY_FLOOR = 0
-    DEFAULT_SINGLE_SALARY = 70000
-    DEFAULT_RANGE_LOW = 65000
-    DEFAULT_RANGE_HIGH = 75000
+    DEFAULT_SINGLE_SALARY = 65000
+    DEFAULT_RANGE_LOW = 60000
+    DEFAULT_RANGE_HIGH = 70000
     # Kept as a last-resort constant for any path that has no job context.
     DEFAULT_SALARY_EXPECTATION = str(DEFAULT_SINGLE_SALARY)
     SALARY_EXPECTATION_KEYWORDS = (
