@@ -632,6 +632,16 @@ class TestGPTAnswerer:
         result = GPTAnswerer.find_best_match(text, options)
         assert result == "no info"
 
+    def test_gpt_answerer_find_best_match_gender_not_substring(self):
+        """'Male' must not match inside 'Female' (substring trap)."""
+        assert GPTAnswerer.find_best_match("female", ["Male", "Female"]) == "Female"
+        assert GPTAnswerer.find_best_match("female", ["Male", "Woman"]) == "no info"
+        assert GPTAnswerer.find_best_match("she is female", ["Male", "Woman"]) == "no info"
+
+    def test_gpt_answerer_find_best_match_special_chars_still_substring(self):
+        """Options with symbols (C++) still match by substring."""
+        assert GPTAnswerer.find_best_match("I mainly use C++", ["C++", "Java"]) == "C++"
+
     @patch("src.llm.llm_manager.AIAdapter")
     @patch("src.llm.llm_manager.LoggerChatModel")
     def test_gpt_answerer_set_resume(

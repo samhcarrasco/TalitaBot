@@ -644,12 +644,23 @@ class GPTAnswerer:
         #    longest (most specific) one. This prevents a short, generic catch-all
         #    option like "Other" from winning when the response also contains a real
         #    answer such as "JavaScript" (e.g. "JavaScript, more than the others").
+        # A short option must not match *inside* a longer word of the response
+        # (e.g. "Male" inside "Female"). Require a whole-word hit when the option is
+        # plain letters; options with symbols (C++, C#, .NET) fall back to substring.
+        def option_in_text(option: str, haystack: str) -> bool:
+            option = option.strip()
+            if not option:
+                return False
+            if re.search(r"[^\w\s]", option):
+                return option in haystack
+            return re.search(r"\b" + re.escape(option) + r"\b", haystack) is not None
+
         candidates = [
             option
             for option in options
-            if option.lower() in text_lower
+            if option_in_text(option.lower(), text_lower)
             or text_lower in option.lower()
-            or normalize_for_match(option) in normalized_text
+            or option_in_text(normalize_for_match(option), normalized_text)
             or normalized_text in normalize_for_match(option)
         ]
         if candidates:
