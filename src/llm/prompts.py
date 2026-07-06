@@ -97,20 +97,21 @@ Output Score: 0 (REJECT) if ANY of the following is true:
 2. STAFF-LEVEL-OR-ABOVE: the role's level is Staff, Senior Staff, Principal,
    Senior Principal, Distinguished, Fellow, Architect-track senior, or higher.
    Do NOT reject Entry, Associate, Mid, or Senior (non-Staff) roles.
-3. NOT-SOCIAL-MEDIA-FOCUSED: social media is NOT the role's primary focus. APPLY
-   ONLY to roles whose core responsibility is social media — managing, creating, or
-   strategizing content for social media channels and their communities (e.g. Social
-   Media Coordinator / Specialist / Manager, Community Manager, social-content
-   creator). REJECT everything else, even when marketing-adjacent: public relations /
-   communications, brand, product / field / event marketing, email marketing, SEO /
-   SEM, paid media, and general "digital marketing" roles where social media is only
-   one of several duties — as well as sales, account management, recruiting, and
-   financial / insurance sales (which often bait applicants with "build your brand /
-   use social media" language). When social media is clearly the main focus, APPLY;
-   when it is only a minor part of a broader non-social role, REJECT.
+3. NOT-SOCIAL-OR-DIGITAL-MARKETING: the role's primary focus is NOT social media or
+   digital marketing. APPLY to roles whose core responsibility is social media
+   (managing, creating, or strategizing content for social channels and their
+   communities, INCLUDING paid social / social media advertising / running paid
+   campaigns on social platforms — e.g. Social Media Coordinator / Specialist /
+   Manager, Paid Social Specialist, Community Manager, social-content creator) OR
+   digital marketing (e.g. Digital Marketing Coordinator / Specialist / Associate). REJECT roles centered on anything else,
+   even when marketing-adjacent: public relations / communications, brand-only,
+   event / field / product marketing, sales, account management, business
+   development, recruiting, and financial / insurance sales (which often bait
+   applicants with "build your brand / use social media" language), or any unrelated
+   field. When social media or digital marketing is clearly the main focus, APPLY.
 
 Otherwise, output Score: 100 (APPLY). When you genuinely cannot tell whether social
-media is the role's primary focus, default to Score: 100.
+media or digital marketing is the role's primary focus, default to Score: 100.
 Do not deduct points for anything else — missing skills, experience gaps,
 unmatched requirements, or search-parameter mismatches must NOT lower the score.
 
