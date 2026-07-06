@@ -1428,7 +1428,9 @@ class LinkedInEasyApplier(BaseEasyApplier):
                 answer = existing_answer
                 logger.info(f"Using existing answer: {answer}")
             elif is_salary_expectation:
-                answer = self._salary_expectation_answer(is_numeric)
+                answer = self._salary_expectation_answer(
+                    is_numeric, is_hourly=self._looks_like_hourly_question(question_text)
+                )
                 logger.info(
                     "Using salary expectation for '%s': %s",
                     question_text,

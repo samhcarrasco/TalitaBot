@@ -692,7 +692,9 @@ class IndeedEasyApplier(BaseEasyApplier):
             )
             existing_answer = cached.answer if cached else None
             if is_salary_expectation:
-                answer = self._salary_expectation_answer(is_numeric)
+                answer = self._salary_expectation_answer(
+                    is_numeric, is_hourly=self._looks_like_hourly_question(question_text)
+                )
                 logger.info(
                     "Using salary expectation for '%s': %s",
                     question_text,
@@ -1074,7 +1076,10 @@ class IndeedEasyApplier(BaseEasyApplier):
             try:
                 current_value = await element.input_value()
                 if self._looks_like_salary_expectation_question(question_text):
-                    answer = self._salary_expectation_answer(is_numeric=True)
+                    answer = self._salary_expectation_answer(
+                        is_numeric=True,
+                        is_hourly=self._looks_like_hourly_question(question_text),
+                    )
                     logger.info(
                         "Using salary expectation while fixing textbox error for '%s': %s",
                         question_text,

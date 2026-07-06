@@ -31,7 +31,7 @@ def test_parse_salary_high_end(text, expected):
     assert BaseEasyApplier._parse_salary_high_end(text) == expected
 
 
-def _answer(salary_text: str | None, is_numeric: bool) -> str:
+def _answer(salary_text: str | None, is_numeric: bool, is_hourly: bool = False) -> str:
     """Call the instance method with a minimal fake `self` carrying a job."""
     fake_self = SimpleNamespace(
         current_job=SimpleNamespace(salary_range=None, job_description=salary_text or ""),
@@ -39,9 +39,26 @@ def _answer(salary_text: str | None, is_numeric: bool) -> str:
         DEFAULT_SINGLE_SALARY=BaseEasyApplier.DEFAULT_SINGLE_SALARY,
         DEFAULT_RANGE_LOW=BaseEasyApplier.DEFAULT_RANGE_LOW,
         DEFAULT_RANGE_HIGH=BaseEasyApplier.DEFAULT_RANGE_HIGH,
+        HOURLY_BASIS_SALARY=BaseEasyApplier.HOURLY_BASIS_SALARY,
+        FULL_TIME_HOURS_PER_YEAR=BaseEasyApplier.FULL_TIME_HOURS_PER_YEAR,
         _parse_salary_high_end=BaseEasyApplier._parse_salary_high_end,
     )
-    return BaseEasyApplier._salary_expectation_answer(fake_self, is_numeric)
+    return BaseEasyApplier._salary_expectation_answer(fake_self, is_numeric, is_hourly)
+
+
+def test_hourly_numeric_converts_from_55k_basis():
+    # 55000 / 2080 ≈ 26
+    assert _answer("No salary listed", is_numeric=True, is_hourly=True) == "26"
+
+
+def test_hourly_range_field():
+    # low from HOURLY_BASIS_SALARY (55k), high from DEFAULT_RANGE_HIGH (70k)
+    assert _answer("No salary listed", is_numeric=False, is_hourly=True) == "26 - 34"
+
+
+def test_hourly_ignores_annual_listing():
+    # an annual listing range must not turn an hourly answer into an annual figure
+    assert _answer("$90,000 - $130,000", is_numeric=True, is_hourly=True) == "26"
 
 
 def test_listing_range_uses_high_end():
