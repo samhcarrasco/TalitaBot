@@ -97,20 +97,20 @@ Output Score: 0 (REJECT) if ANY of the following is true:
 2. STAFF-LEVEL-OR-ABOVE: the role's level is Staff, Senior Staff, Principal,
    Senior Principal, Distinguished, Fellow, Architect-track senior, or higher.
    Do NOT reject Entry, Associate, Mid, or Senior (non-Staff) roles.
-3. OFF-DOMAIN: the role's core focus is NOT social media, community management,
-   content, brand, communications, or general digital/marketing work. Reject roles
-   centered on sales or account management (e.g. Account Executive, Account Manager,
-   Sales, Business Development), on paid-media buying / ad operations (e.g. Media
-   Buyer, Media Planner, Paid Media, PPC / paid-search specialist), on financial or
-   insurance sales (e.g. Financial Advisor, Financial Representative, insurance agent
-   — these are often dressed up with "build your brand / use social media" language
-   but are still off-domain), or on any other unrelated field. Do NOT reject a role
-   that is primarily about social media,
-   community, content, brand, communications, or digital marketing just because it
-   also mentions some paid-media or sales-adjacent duties.
+3. NOT-SOCIAL-MEDIA-FOCUSED: social media is NOT the role's primary focus. APPLY
+   ONLY to roles whose core responsibility is social media — managing, creating, or
+   strategizing content for social media channels and their communities (e.g. Social
+   Media Coordinator / Specialist / Manager, Community Manager, social-content
+   creator). REJECT everything else, even when marketing-adjacent: public relations /
+   communications, brand, product / field / event marketing, email marketing, SEO /
+   SEM, paid media, and general "digital marketing" roles where social media is only
+   one of several duties — as well as sales, account management, recruiting, and
+   financial / insurance sales (which often bait applicants with "build your brand /
+   use social media" language). When social media is clearly the main focus, APPLY;
+   when it is only a minor part of a broader non-social role, REJECT.
 
-Otherwise, output Score: 100 (APPLY). When unsure whether a marketing role is
-on-domain, default to Score: 100.
+Otherwise, output Score: 100 (APPLY). When you genuinely cannot tell whether social
+media is the role's primary focus, default to Score: 100.
 Do not deduct points for anything else — missing skills, experience gaps,
 unmatched requirements, or search-parameter mismatches must NOT lower the score.
 
