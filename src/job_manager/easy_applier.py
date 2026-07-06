@@ -35,10 +35,10 @@ class BaseEasyApplier(ABC):
     DEFAULT_SINGLE_SALARY = 65000
     DEFAULT_RANGE_LOW = 60000
     DEFAULT_RANGE_HIGH = 70000
-    # Hourly-rate answers convert from a lower annual basis (she is open to ~$55k)
-    # so we don't price out of hourly roles, using full-time hours per year.
-    HOURLY_BASIS_SALARY = 55000
-    FULL_TIME_HOURS_PER_YEAR = 2080  # 40h/week * 52 weeks
+    # Hourly-rate answers: a flat single value, or low/high for a range field.
+    HOURLY_SINGLE = 30
+    HOURLY_RANGE_LOW = 28
+    HOURLY_RANGE_HIGH = 35
     # Kept as a last-resort constant for any path that has no job context.
     DEFAULT_SALARY_EXPECTATION = str(DEFAULT_SINGLE_SALARY)
     SALARY_EXPECTATION_KEYWORDS = (
@@ -147,16 +147,16 @@ class BaseEasyApplier(ABC):
     def _salary_expectation_answer(self, is_numeric: bool, is_hourly: bool = False) -> str:
         """Answer a salary-expectation field per Talita's policy.
 
-        - Hourly-rate question -> HOURLY_BASIS_SALARY converted to an hourly figure
-          (single value, or "low - high" for a range-accepting field).
+        - Hourly-rate question -> HOURLY_SINGLE (single value) or
+          "HOURLY_RANGE_LOW - HOURLY_RANGE_HIGH" for a range-accepting field.
         - Listing advertises a range -> its high end (SALARY_FLOOR is 0, so no floor).
         - No range, single-value field -> DEFAULT_SINGLE_SALARY.
         - No range, range-accepting field -> "DEFAULT_RANGE_LOW - DEFAULT_RANGE_HIGH".
         """
         if is_hourly:
-            low = round(self.HOURLY_BASIS_SALARY / self.FULL_TIME_HOURS_PER_YEAR)
-            high = round(self.DEFAULT_RANGE_HIGH / self.FULL_TIME_HOURS_PER_YEAR)
-            return str(low) if is_numeric else f"{low} - {high}"
+            if is_numeric:
+                return str(self.HOURLY_SINGLE)
+            return f"{self.HOURLY_RANGE_LOW} - {self.HOURLY_RANGE_HIGH}"
         job = getattr(self, "current_job", None)
         listing_text = ""
         if job is not None:
