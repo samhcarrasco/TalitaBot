@@ -1,0 +1,63 @@
+# The bot joins every entry into ONE LinkedIn keyword search (commas, not OR).
+# So we use a single boolean OR query to cover all of Talita's role clusters in
+# that one search. LinkedIn's keyword box supports OR / quotes / parentheses.
+positions:
+  - '"digital marketing" OR "marketing coordinator" OR "social media" OR "community manager" OR "content marketing"'
+
+remote: true
+hybrid: true
+onsite: true
+
+experience_level:
+  internship: false
+  entry: true
+  associate: true
+  mid_senior_level: false
+  director: false
+  executive: false
+
+job_types:
+  full_time: true
+  contract: false
+  part_time: false
+  temporary: false
+  volunteer: false
+  internship: false
+  other: false
+
+date:
+  all_time: false
+  month: false
+  week: true
+  24_hours: false
+
+# Talita applies everywhere (any US location) - no location filter.
+locations: []
+
+apply_once_at_company: false
+
+company_blacklist: []
+
+# Talita targets entry/associate marketing & comms roles. Filter out senior/
+# manager tracks that need more experience than her resume shows.
+# NOTE: matching is case-insensitive SUBSTRING, so "Marketing Manager" (not bare
+# "Manager") is used to keep the wanted "Community Manager" roles.
+title_blacklist:
+  - Senior
+  - Sr.
+  - Director
+  - Head of
+  - VP
+  - Vice President
+  - Chief
+  - Marketing Manager
+  - Product Marketing
+  - Performance Marketing
+  - Demand Generation
+  - Marketing Automation
+  - PPC
+  - Data Scientist
+  - Data Analyst
+  - UX Researcher
+
+location_blacklist: []

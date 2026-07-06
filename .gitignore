@@ -31,8 +31,11 @@ MANIFEST
 browser_session/*
 browser_session_my/*
 browser_session_work/*
-config/app_config*.py
+# NOTE: config/app_config.py and config/search_config.yaml are REQUIRED to run and
+# are committed to this private per-person fork (they hold no secrets — API keys
+# live in .env). Any other generated yaml under config/ stays ignored.
 config/*.yaml
+!config/search_config.yaml
 data/cover_letters/*
 data/output/*
 data/resumes/*
