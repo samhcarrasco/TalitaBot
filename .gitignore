@@ -39,6 +39,8 @@ config/*.yaml
 data/cover_letters/*
 data/output/*
 data/resumes/*
+# resume_text.txt is committed so a fresh clone can start (no secrets; PDFs stay ignored).
+!data/resumes/resume_text.txt
 data/debug/*
 data/photo/*
 src/telegram/error_cache.yaml
