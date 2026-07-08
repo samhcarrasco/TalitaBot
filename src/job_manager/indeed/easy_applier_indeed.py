@@ -686,13 +686,30 @@ class IndeedEasyApplier(BaseEasyApplier):
                 is_numeric and self._looks_like_salary_expectation_question(question_text)
             )
             is_location = self._looks_like_location_question(question_text)
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Only yes/no-phrased,
+            # non-numeric questions qualify; runs before the cache so a stale
+            # "No" can never be reused.
+            is_commute_yes = (
+                not is_numeric
+                and self._is_commute_relocation_question(question_text)
+                and self._looks_like_yes_no_phrasing(question_text)
+            )
             cached = (
                 None
-                if is_salary_expectation or is_location
+                if is_salary_expectation or is_location or is_commute_yes
                 else self._find_cached_question(question_text, question_type)
             )
             existing_answer = cached.answer if cached else None
-            if is_salary_expectation:
+            if is_commute_yes:
+                answer = "Yes"
+                logger.info(
+                    f"Commute/relocation question detected; forcing 'Yes' for: {question_text}"
+                )
+                self._save_questions(
+                    Question(question_type="text", question=question_text, answer=answer)
+                )
+            elif is_salary_expectation:
                 answer = self._salary_expectation_answer(
                     is_numeric, is_hourly=self._looks_like_hourly_question(question_text)
                 )
@@ -781,9 +798,29 @@ class IndeedEasyApplier(BaseEasyApplier):
             if question_text:
                 self.previous_question_texts.append(question_text)
 
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Runs before the cache so a
+            # stale "No" can never be reused.
+            forced_yes = None
+            if self._is_commute_relocation_question(question_text):
+                forced_yes = self._pick_yes_option(option_texts)
+
             cached = self._find_cached_question(question_text, "checkbox")
             existing_answer = cached.answer if cached else None
-            if existing_answer:
+            if forced_yes is not None:
+                selected_options = [forced_yes]
+                logger.info(
+                    f"Commute/relocation question detected; forcing 'Yes' "
+                    f"(option='{forced_yes}') for: {question_text}"
+                )
+                self._save_questions(
+                    Question(
+                        question_type="checkbox",
+                        question=question_text,
+                        answer=selected_options,
+                    )
+                )
+            elif existing_answer:
                 selected_options = (
                     existing_answer if isinstance(existing_answer, list) else [existing_answer]
                 )
@@ -857,9 +894,25 @@ class IndeedEasyApplier(BaseEasyApplier):
             if question_text:
                 self.previous_question_texts.append(question_text)
 
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Runs before the cache so a
+            # stale "No" can never be reused.
+            forced_yes = None
+            if self._is_commute_relocation_question(question_text):
+                forced_yes = self._pick_yes_option(option_texts)
+
             cached = self._find_cached_question(question_text, "radio")
             existing_answer = cached.answer if cached else None
-            if existing_answer:
+            if forced_yes is not None:
+                answer = forced_yes
+                logger.info(
+                    f"Commute/relocation question detected; forcing 'Yes' "
+                    f"(option='{forced_yes}') for: {question_text}"
+                )
+                self._save_questions(
+                    Question(question_type="radio", question=question_text, answer=forced_yes)
+                )
+            elif existing_answer:
                 answer = existing_answer
                 logger.debug(f"Using cached radio answer for '{question_text}': '{answer}'")
             else:
@@ -928,9 +981,25 @@ class IndeedEasyApplier(BaseEasyApplier):
 
             self.previous_question_texts.append(question_text)
 
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Runs before the cache so a
+            # stale "No" can never be reused.
+            forced_yes = None
+            if self._is_commute_relocation_question(question_text):
+                forced_yes = self._pick_yes_option(option_texts)
+
             cached = self._find_cached_question(question_text, "dropdown")
             existing_answer = cached.answer if cached else None
-            if existing_answer:
+            if forced_yes is not None:
+                answer = forced_yes
+                logger.info(
+                    f"Commute/relocation question detected; forcing 'Yes' "
+                    f"(option='{forced_yes}') for: {question_text}"
+                )
+                self._save_questions(
+                    Question(question_type="dropdown", question=question_text, answer=forced_yes)
+                )
+            elif existing_answer:
                 answer = existing_answer
                 logger.debug(f"Using cached dropdown answer for '{question_text}': '{answer}'")
             else:

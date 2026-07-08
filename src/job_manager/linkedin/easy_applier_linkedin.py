@@ -1138,6 +1138,13 @@ class LinkedInEasyApplier(BaseEasyApplier):
                 logger.info(f"Asking LLM to select checkboxes for question: {question_text}")
                 logger.info(f"Available options: {checkbox_options}")
 
+                # Always answer "Yes" to commute/relocation-willingness
+                # questions — a "No" auto-rejects the application. Runs before
+                # the cache so a stale "No" can never be reused.
+                forced_yes = None
+                if self._is_commute_relocation_question(question_text):
+                    forced_yes = self._pick_yes_option(checkbox_options)
+
                 # Look for existing answer if it's not a cover letter field
                 existing_answer = None
                 current_question_sanitized = sanitize_text(question_text)
@@ -1150,7 +1157,20 @@ class LinkedInEasyApplier(BaseEasyApplier):
                         logger.debug(f"Found existing answer: {existing_answer}")
                         break
 
-                if existing_answer:
+                if forced_yes is not None:
+                    selected_options = [forced_yes]
+                    logger.info(
+                        f"Commute/relocation question detected; forcing 'Yes' "
+                        f"(option='{forced_yes}') for: {question_text}"
+                    )
+                    self._save_questions(
+                        Question(
+                            question_type="checkbox",
+                            question=question_text,
+                            answer=selected_options,
+                        )
+                    )
+                elif existing_answer:
                     selected_options = existing_answer
                 else:
                     selected_options = self.gpt_answerer.select_many_answers_from_options(
@@ -1300,6 +1320,49 @@ class LinkedInEasyApplier(BaseEasyApplier):
                 logger.debug("No options extracted from radio buttons, skipping")
                 return False
 
+            # Never let the LLM (or a stale cache) answer a "do you require visa
+            # sponsorship" question — a "Yes" there auto-rejects the application.
+            if self._is_sponsorship_requirement_question(question_text):
+                no_option = self._pick_no_option(options)
+                if no_option is not None:
+                    logger.info(
+                        f"Sponsorship-requirement question detected; forcing "
+                        f"'No' (option='{no_option}') for: {question_text}"
+                    )
+                    question_data = Question(
+                        question_type="radio", question=question_text, answer=no_option
+                    )
+                    self._save_questions(question_data)
+                    self.all_questions = self._load_questions()
+                    await self._select_radio(section, radios, no_option)
+                    return True
+                logger.warning(
+                    f"Sponsorship question detected but no 'No' option in {options}; "
+                    "falling back to normal handling"
+                )
+
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Runs before the cache so a
+            # stale "No" can never be reused.
+            if self._is_commute_relocation_question(question_text):
+                yes_option = self._pick_yes_option(options)
+                if yes_option is not None:
+                    logger.info(
+                        f"Commute/relocation question detected; forcing "
+                        f"'Yes' (option='{yes_option}') for: {question_text}"
+                    )
+                    question_data = Question(
+                        question_type="radio", question=question_text, answer=yes_option
+                    )
+                    self._save_questions(question_data)
+                    self.all_questions = self._load_questions()
+                    await self._select_radio(section, radios, yes_option)
+                    return True
+                logger.warning(
+                    f"Commute/relocation question detected but no 'Yes' option in "
+                    f"{options}; falling back to normal handling"
+                )
+
             cached_question = self._find_cached_question(question_text, "radio")
             if cached_question:
                 await self._select_radio(section, radios, cached_question.answer)
@@ -1387,6 +1450,15 @@ class LinkedInEasyApplier(BaseEasyApplier):
                 is_numeric and self._looks_like_salary_expectation_question(question_text)
             )
             is_location = self._looks_like_location_question(question_text)
+            # Always answer "Yes" to commute/relocation-willingness questions —
+            # a "No" auto-rejects the application. Only yes/no-phrased,
+            # non-numeric questions qualify; runs before the cache so a stale
+            # "No" can never be reused.
+            is_commute_yes = (
+                not is_numeric
+                and self._is_commute_relocation_question(question_text)
+                and self._looks_like_yes_no_phrasing(question_text)
+            )
 
             # Check if it's a cover letter field (case-insensitive)
             is_cover_letter = self._looks_like_cover_letter(question_text)
@@ -1415,7 +1487,12 @@ class LinkedInEasyApplier(BaseEasyApplier):
             logger.info(f"question: {question_text}")
             # Look for existing answer if it's not a cover letter field
             existing_answer = None
-            if not is_cover_letter and not is_salary_expectation and not is_location:
+            if (
+                not is_cover_letter
+                and not is_salary_expectation
+                and not is_location
+                and not is_commute_yes
+            ):
                 cached_question = self._find_cached_question(question_text, question_type)
                 if cached_question:
                     existing_answer = cached_question.answer.strip()
@@ -1425,7 +1502,12 @@ class LinkedInEasyApplier(BaseEasyApplier):
                         cached_question.question_type,
                     )
 
-            if existing_answer:
+            if is_commute_yes:
+                answer = "Yes"
+                logger.info(
+                    f"Commute/relocation question detected; forcing 'Yes' for: {question_text}"
+                )
+            elif existing_answer:
                 answer = existing_answer
                 logger.info(f"Using existing answer: {answer}")
             elif is_salary_expectation:
@@ -1553,6 +1635,55 @@ class LinkedInEasyApplier(BaseEasyApplier):
                 except Exception as e:
                     logger.warning(f"Could not find label for dropdown: {e}")
                     question_text = ""
+
+                # Never let the LLM (or a stale cache / prefilled value) answer a
+                # "do you require visa sponsorship" question — a "Yes" there
+                # auto-rejects the application.
+                if self._is_sponsorship_requirement_question(question_text):
+                    no_option = self._pick_no_option(options)
+                    if no_option is not None:
+                        logger.info(
+                            f"Sponsorship-requirement question detected; forcing "
+                            f"'No' (option='{no_option}') for: {question_text}"
+                        )
+                        self._save_questions(
+                            Question(
+                                question_type="dropdown",
+                                question=question_text,
+                                answer=no_option,
+                            )
+                        )
+                        await self._select_dropdown_option(dropdown, no_option)
+                        return True
+                    logger.warning(
+                        f"Sponsorship question detected but no 'No' option in {options}; "
+                        "falling back to normal handling"
+                    )
+
+                # Always answer "Yes" to commute/relocation-willingness
+                # questions — a "No" auto-rejects the application. Runs before
+                # the prefilled/cached checks so a stale or prefilled "No" can
+                # never be reused.
+                if self._is_commute_relocation_question(question_text):
+                    yes_option = self._pick_yes_option(options)
+                    if yes_option is not None:
+                        logger.info(
+                            f"Commute/relocation question detected; forcing "
+                            f"'Yes' (option='{yes_option}') for: {question_text}"
+                        )
+                        self._save_questions(
+                            Question(
+                                question_type="dropdown",
+                                question=question_text,
+                                answer=yes_option,
+                            )
+                        )
+                        await self._select_dropdown_option(dropdown, yes_option)
+                        return True
+                    logger.warning(
+                        f"Commute/relocation question detected but no 'Yes' option in "
+                        f"{options}; falling back to normal handling"
+                    )
 
                 try:
                     current_selection = (

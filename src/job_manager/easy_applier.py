@@ -173,6 +173,131 @@ class BaseEasyApplier(ABC):
             return self.LOCATION_COUNTRY
         return self.LOCATION_FULL
 
+    @classmethod
+    def _is_sponsorship_requirement_question(cls, text: str) -> bool:
+        """True for questions asking whether the candidate REQUIRES visa/work
+        sponsorship, e.g. "Will you now or in the future require sponsorship for
+        employment visa status?".
+
+        Answering "Yes" here auto-rejects the application at many employers, and
+        the applicant does NOT require sponsorship, so this answer is forced to
+        "No" deterministically instead of trusting the LLM (which can flip it) or
+        a stale cache. Negated phrasings ("without sponsorship", "do not require
+        sponsorship") are excluded so a forced "No" can never land on a question
+        where "No" would be the wrong answer.
+        """
+        normalized = sanitize_text(text or "").replace("'", "").replace("’", "")
+        if "sponsor" not in normalized:
+            return False
+        if any(neg in normalized for neg in ("without", "not requir", "dont requir")):
+            return False
+        return "requir" in normalized or "need" in normalized
+
+    # Phrasings where "Yes" to a commute/relocation question would be wrong:
+    # negations ("anything preventing you from commuting?") and requests for
+    # money ("do you require relocation assistance?" — like sponsorship, "Yes"
+    # auto-rejects). The forced "Yes" must stand down and let normal handling
+    # answer.
+    COMMUTE_RELOCATION_NEGATIONS = (
+        "unable",
+        "not able",
+        "cannot",
+        "can not",
+        "not willing",
+        "not comfortable",
+        "prevent",
+        "restrict",
+        "issue",
+        "problem",
+        "concern",
+        "difficult",
+        "assist",
+        "reimburs",
+    )
+
+    # Markers that a commute/relocation question is asking yes/no willingness
+    # (vs. an open question like "how long is your commute?"), so a plain
+    # "Yes" is a valid free-text answer.
+    YES_NO_PHRASINGS = (
+        "are you",
+        "would you",
+        "can you",
+        "will you",
+        "do you",
+        "could you",
+        "comfortable",
+        "willing",
+        "able",
+        "open to",
+    )
+
+    @classmethod
+    def _looks_like_yes_no_phrasing(cls, text: str) -> bool:
+        normalized = sanitize_text(text or "")
+        return any(marker in normalized for marker in cls.YES_NO_PHRASINGS)
+
+    @classmethod
+    def _is_commute_relocation_question(cls, text: str) -> bool:
+        """True for questions about willingness/comfort commuting or relocating,
+        e.g. "Are you comfortable commuting to this job's location?" or "Are
+        you willing to relocate?".
+
+        These are always answered "Yes" deterministically — a "No" auto-rejects
+        the application — instead of trusting the LLM (which has answered "No"
+        despite the resume saying otherwise) or a stale cached answer. Negated
+        phrasings ("anything preventing you from commuting?") are excluded so a
+        forced "Yes" can never land on a question where "Yes" would be the
+        wrong answer. Non-yes/no commute questions ("how long is your
+        commute?") are skipped by the caller because _pick_yes_option finds no
+        affirmative option.
+        """
+        normalized = sanitize_text(text or "").replace("'", "").replace("’", "")
+        if "commut" not in normalized and "relocat" not in normalized:
+            return False
+        return not any(neg in normalized for neg in cls.COMMUTE_RELOCATION_NEGATIONS)
+
+    @staticmethod
+    def _pick_yes_option(options: List[str]) -> str | None:
+        """From a yes/no option list, return the option meaning "Yes",
+        preserving its original text. Returns None when there is no clear
+        affirmative option, so the caller can fall back to normal handling
+        rather than guess."""
+
+        def norm(value: str) -> str:
+            return " ".join((value or "").lower().split())
+
+        # An exact "yes" wins outright.
+        for option in options:
+            if norm(option) == "yes":
+                return option
+        # Otherwise an explicit affirmative like "yes, i can commute".
+        for option in options:
+            n = norm(option)
+            if n.startswith("yes ") or n.startswith("yes,"):
+                return option
+        return None
+
+    @staticmethod
+    def _pick_no_option(options: List[str]) -> str | None:
+        """From a yes/no option list, return the option meaning "No" (never "No
+        info"), preserving its original text. Returns None when there is no clear
+        negative option, so the caller can fall back to normal handling rather
+        than guess."""
+
+        def norm(value: str) -> str:
+            return " ".join((value or "").lower().split())
+
+        # An exact "no" wins outright.
+        for option in options:
+            if norm(option) == "no":
+                return option
+        # Otherwise an explicit negative like "no, i do not require sponsorship".
+        for option in options:
+            n = norm(option)
+            if (n.startswith("no ") or n.startswith("no,")) and "no info" not in n and "yes" not in n:
+                return option
+        return None
+
     # Two money amounts joined by a dash/"to", each optionally $-prefixed, comma-
     # grouped, and/or "k"-suffixed: e.g. "$90,000-$130,000", "90k to 130k".
     _SALARY_RANGE_RE = re.compile(
